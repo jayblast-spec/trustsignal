@@ -33,8 +33,18 @@ TrustSignal takes a domain and produces an instant A–F security score by evalu
 ## How It Works
 
 - Next.js App Router front end (`app/page.tsx`), styled with Tailwind CSS 4 and animated with Framer Motion, using the Geist font family.
-- `app/api/scan/route.ts` performs the live header/HTTPS scan server-side; `app/api/intelligence/route.ts` adds an analysis layer that turns raw scan results into the A–F grade and summary.
+- `app/api/scan/route.ts` performs the live header/HTTPS scan server-side and computes the weighted A–F grade directly from the real response headers.
 - No account or API key is required — a domain goes in, a grade comes back.
+
+## Engineering Notes
+
+**The real problem:** most "security header checker" tools just list what's present or missing — they don't tell you which gaps actually matter, so a missing `X-Content-Type-Options` header looks as urgent as a missing CSP.
+
+**The approach:** `scan/route.ts` makes a real HTTPS request to the target domain (with an HTTP fallback to catch redirect behavior), reads the live response headers, and runs each check (HSTS, X-Frame-Options/CSP frame-ancestors, CSP presence, and others) through its own weight — the grade is a weighted sum, not a checklist count, so a missing CSP costs more than a missing low-impact header.
+
+**One real number:** grades are cut at 90/75/60/40 (A/B/C/D/F) against the weighted score total — a domain with strong CSP and HSTS but one minor gap can still land an A; a domain missing CSP entirely is capped well below it regardless of what else passes.
+
+**Not handled yet:** `app/api/intelligence` is a separate, disconnected decorative endpoint (a string-length heuristic) — it does not feed the grade and shouldn't be read as part of the scan.
 
 ## Live
 
