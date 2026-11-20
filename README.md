@@ -7,7 +7,6 @@
 TrustSignal scans any domain and returns an instant A–F security grade, checking HTTPS enforcement, security headers, CSP, and HSTS so you know what you're dealing with before you trust it.
 
 <p>
-  <a href="https://trustsignal-delta.vercel.app"><img alt="Live Demo" src="https://img.shields.io/badge/Live-Demo-1D4ED8?style=for-the-badge&logo=vercel&logoColor=white"></a>
   <a href="https://github.com/jayblast-spec/trustsignal"><img alt="GitHub Repo" src="https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white"></a>
 </p>
 
@@ -48,7 +47,7 @@ TrustSignal takes a domain and produces an instant A–F security score by evalu
 
 ## Live
 
-Production: **https://trustsignal-delta.vercel.app**
+Production: *(demo temporarily offline)*
 
 ## Tech Stack
 
